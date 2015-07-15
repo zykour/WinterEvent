@@ -10,17 +10,89 @@ namespace WinterEvent
 {
     class Game
     {
+        // holds the list of GameNodes before they are linked up.
         LinkedList<GameNode> initializationList;
-        Array gameNodes;
+
+        // an array of gameNode items
+        GameNode[] gameNodes;
+
+        // filepath to savegame data
         string saveURL;
 
         protected Game() { }
         public Game(string dataURL, string saveURL)
         {
             this.saveURL = saveURL;
+
+            Initialize(dataURL);
+
+            LoadSave(saveURL);
+
+            foreach (GameNode k in currentNodes)
+            {
+                // play each
+            }
         }
 
+        // a list of nodes that are in play (live)
+
         LinkedList<GameNode> currentNodes;
+
+        public string Parse(string text, Actor actor)
+        {
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //===================================================
+        //      Initialization code
+        //===================================================
+
+        private void LoadSave(string saveURL)
+        {
+            // save the current nodes (ones that are live) by writing their IDs to a single line CSV file
+
+            string data = "";
+
+            try
+            {
+                using (StreamReader sr = new StreamReader(saveURL))
+                {
+                    data = sr.ReadToEnd();
+                }
+            }
+            catch (IOException e)
+            {
+            }
+
+            if (data.CompareTo("") == 0)
+            {
+                // no save data, new game
+                return;
+            }
+            else
+            {
+                // saved nodes are stored as a CSV
+                string[] tempNodes = data.Split(',');
+
+                for (int i = 0; i < tempNodes.Length; i++)
+                {
+                    currentNodes.AddLast(gameNodes[Int32.Parse(tempNodes[i])]);
+                }
+            }
+        }
 
         private void Initialize(string dataURL)
         {
@@ -55,6 +127,13 @@ namespace WinterEvent
                     CreateNode(tempNode);
                 }
             }
+
+            gameNodes = new GameNode[initializationList.Count];
+
+            for (int i = 0; i < initializationList.Count; i++)
+            {
+                gameNodes[i] = initializationList.ElementAt(i);
+            }
         }
 
         private void CreateNode(string tempNode)
@@ -68,14 +147,16 @@ namespace WinterEvent
             for (int i = 3; i < nodeData.Length; i++)
             {
                 if (nodeData[i].IndexOf("&&") != -1)
-                    string command = nodeData[i].Substring(0, )
-                    string output = 
-                    newNode.AddCommandMap(new CommandMap());
+                {
+                    string command = nodeData[i].Substring(0, nodeData[i].IndexOf("&&"));
+                    string output = nodeData[i].Substring(nodeData[i].IndexOf("&&") + 2);
+                    newNode.AddCommandMap(new CommandMap(command, output));
+                }
             }
+
+            initializationList.AddLast(newNode);
         }
 
-        //load game
-        //link
         //start
     }
 }

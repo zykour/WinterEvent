@@ -42,30 +42,7 @@ namespace WinterEvent
 
         public void AddCommandMap(CommandMap commandMap)
         {
-            commandList.Add(commandMap);
-        }
-    }
-
-    class CommandMap
-    {
-        private string command;
-        public string Command
-        {
-            get { return command; }
-            set { command = value; }
-        }
-
-        private string message;
-        public string Message
-        {
-            get { return message; }
-            set { message = value; }
-        }
-
-        public CommandMap(string command, string message)
-        {
-            this.command = command;
-            this.message = message;
+            commandList.AddFirst(commandMap);
         }
     }
 }
