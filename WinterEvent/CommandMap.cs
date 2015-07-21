@@ -12,20 +12,20 @@ namespace WinterEvent
         public string Command
         {
             get { return command; }
-            set { command = value; }
+            set { command = value.Trim(); }
         }
 
         private string message;
         public string Message
         {
             get { return message; }
-            set { message = value; }
+            set { message = value.Trim(); }
         }
 
         public CommandMap(string command, string message)
         {
-            this.command = command;
-            this.message = message;
+            this.command = command.Trim().ToLower();
+            this.message = message.Trim();
         }
     }
 }

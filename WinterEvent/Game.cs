@@ -13,6 +13,9 @@ namespace WinterEvent
         // holds the list of GameNodes before they are linked up.
         LinkedList<GameNode> initializationList;
 
+        // holds the list of actors (bots) that can display dialogue
+        Actor[] actors;
+
         // an array of gameNode items
         GameNode[] gameNodes;
 
@@ -28,19 +31,39 @@ namespace WinterEvent
 
             LoadSave(saveURL);
 
-            foreach (GameNode k in currentNodes)
+            foreach (GameNode node in currentNodes)
             {
+                actors[node.Actor].Play(node, this);
                 // play each
             }
+        }
+
+        public void ToggleNode(int id)
+        {
+
+        }
+
+        public void ToggleActor(int id)
+        {
+
         }
 
         // a list of nodes that are in play (live)
 
         LinkedList<GameNode> currentNodes;
 
-        public string Parse(string text, Actor actor)
+        public void Parse(string text)
         {
-
+            foreach (GameNode node in gameNodes)
+            {
+                foreach (CommandMap mapping in node.CommandList)
+                {
+                    if (mapping.Command.CompareTo(text.Trim().ToLower()) == 0)
+                    {
+                        actors[node.Actor].Process(mapping.Message, this);
+                    }
+                }
+            }
         }
 
 
