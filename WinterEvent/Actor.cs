@@ -8,7 +8,12 @@ namespace WinterEvent
 {
     class Actor
     {
-        public Actor() { }
+        private bool active;
+
+        public Actor() 
+        {
+            active = false;
+        }
 
         public void Play(GameNode node, Game game)
         {
@@ -41,6 +46,10 @@ namespace WinterEvent
 
         }
 
+        public bool IsActive()
+        {
+            return active;
+        }
 
     }
 }
